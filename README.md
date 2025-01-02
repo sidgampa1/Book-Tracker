@@ -27,3 +27,7 @@ https://openlibrary.org/dev/docs/api/search
 Tech Stack - MERN
 Authentication - Firebase
 Email Notifications - SendGrid
+
+DB Overview 
+non relational - MongoDB
+relational - Azure
