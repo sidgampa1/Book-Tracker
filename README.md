@@ -30,4 +30,13 @@ Email Notifications - SendGrid
 
 DB Overview 
 non relational - MongoDB
-relational - Azure
+relational - Neon
+
+  Design Decisions
+  - went with Neon as a lightweight relational DB
+    - data is highly relational with users and books relations (v1), as well as user to user relations (v2)
+  - initially started with 3 tables (read, completed, wanttoread)
+    - changed to 1 table with a single column marking readStatus
+    - this allows for quick queries and simple checks to determine status of a book
+    - unique index combo of user ID and book ID to not allow a user to have duplicate entries of a book
+      - each book for a user can only be in a single state (read, completed, want to read)
