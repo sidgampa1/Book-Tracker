@@ -3,23 +3,41 @@ import './App.css';
 import Book from './Book.js';
 
 function App() {
+  this.apiLink = 'http://localhost:3000/api/v1/books'
+
+  function deleteBook(id) {
+    fetch(this.apiLink + "/deleteBook", {
+      method: 'DELETE',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uid: 1,
+        bid: id,
+      })
+    })
+  }
+
+  function addBook(id, readStatus) {
+    fetch(this.apiLink + "/addBook", {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        uid: 1,
+        bid: id,
+        readStatus: readStatus,
+      })
+    })
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-      <Book title="Test1"></Book>
+    <div >
+      <Book title="Test1" id="1" addBook={addBook} deleteBook={deleteBook}></Book>
     </div>
   );
 }

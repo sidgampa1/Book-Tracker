@@ -1,7 +1,6 @@
 import React from 'react'
 
 export default class Book extends React.Component{
-    apiLink = process.env.REACT_APP_BOOKS_LINK;
 
     constructor(props) {
         super(props);
@@ -11,7 +10,11 @@ export default class Book extends React.Component{
     }
     render() {
         return (
+            <div>
             <div>{this.props.title}</div>
+            <div><button onClick={() => this.props.deleteBook(this.props.id)}>Delete</button></div>
+            <div><button onClick={() => this.props.addBook(this.props.id)}>Rate</button></div>
+            </div>
         )
     }
 }
