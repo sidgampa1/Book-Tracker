@@ -1,4 +1,4 @@
-Pool, neonConfig = require('@neondatabase/serverless');
+neonConfig = require('@neondatabase/serverless');
 ws = require('ws');
 neonConfig.webSocketConstructor = ws; 
 
