@@ -3,8 +3,10 @@ const neonDAO = require("../dao/NeonDAO.js");
 module.exports = class NeonController {
     static async addBook(req, res) {
         try {
+            console.log("received request at addBook");
             const { uid, bid, readStatus } = req.body;
             const bookExists = await neonDAO.queryRow(uid, bid);
+            console.log("Book Exists? ", bookExists.rows.length > 0);
             
             if ((bookExists.rows.length > 0) & bookExists.rows[0].readstatus != readStatus) {
                 response = await neonDAO.updateRow(uid, bid, readStatus);
