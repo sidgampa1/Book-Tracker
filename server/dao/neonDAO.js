@@ -23,25 +23,26 @@ module.exports = class NeonDAO {
     
     static async addRow(uid, bid, readStatus) {
         try {
-            console.log("received request at addRow");
-            client = await this.createConnection();
-            await client.query('BEGIN');
-            res = await client.query('INSERT INTO "UserstoBooks" (UserId, BookId, ReadStatus) VALUES ($2, $3, $4) RETURNING id', [
+
+          var sql = new pg.Client(conString);
+          sql.connect();
+          console.log("addRow sql connection made");
+          console.log("uid: ", uid, "bid: ", bid);
+          await sql.query('BEGIN');
+          const res = await sql.query('INSERT INTO "UserstoBooks" (UserId, BookId, ReadStatus) VALUES ($2, $3, $4) RETURNING id', [
             tableName,
             uid,
             bid,
             readStatus
-          ]);
-          await client.query('COMMIT');
-          return res;
+          ]); // 
+          console.log("add row response: ", res);
+          await sql.query('COMMIT');
+          return res
+
         } catch (err) {
           await client.query('ROLLBACK');
           throw err;
-        } finally {
-          client.release();
-          await pool.end();
-
-        }
+        } 
         
     }
 
@@ -70,29 +71,15 @@ module.exports = class NeonDAO {
 
     static async queryRow(uid, bid) {
         try {
-            // console.log("request received at queryRow");
-            // // console.log("creating connection");
-            // // const pool = new neonConfig.Pool({ connectionString: process.env.DATABASE_URL });
-            // // console.log("pool created");
-            // // pool.on('error', (err) => console.error(err)); 
-            // // const client = await pool.connect();
-            // // console.log("query row client created");
-            // // await client.query('BEGIN');
-            // console.log(process.env.DATABASE_URL)
-            // // console.log(neon)
-            // const sql = neon("postgresql://BookTracker_owner:iS2yNF3Ueuqd@ep-autumn-darkness-a5ylnw2k.us-east-2.aws.neon.tech/BookTracker?sslmode=require");
             var sql = new pg.Client(conString);
             sql.connect();
-            console.log("sql connection made ")
-            const res = await sql.query(`SELECT * FROM "UserstoBooks" WHERE userid = ${uid} AND bookid = ${bid}`)
-          console.log("query row response: ", res);
-          return res;
+            console.log("query sql connection made")
+            console.log("uid: ", uid, "bid: ", bid)
+            const res = await sql.query(`SELECT * FROM "UserstoBooks" WHERE userid = ${uid} AND bookid = ${bid}`) // 
+            console.log("query row response: ", res.rows);
+            return res.rows
         } catch (err) {
           throw err;
-        } finally {
-          client.release();
-          await pool.end();
-
         }
         
     }
