@@ -49,24 +49,21 @@ module.exports = class NeonDAO {
 
     static async updateRow(uid, bid, readStatus) {
         try {
-            client = await this.createConnection();
-            await client.query('BEGIN');
-            res = await client.query('UPDATE "UserstoBooks" SET ReadStatus = $3 WHERE UserId = $1 AND BookId = $2', [
-            uid,
-            bid,
-            readStatus
-          ]);
-          await client.query('COMMIT');
-          return res;
+            console.log("received request at updateRow", uid, bid, readStatus);
+            var sql = new pg.Client(conString);
+            sql.connect();
+            console.log("connected to neon");
+            const res = await sql.query(`UPDATE "UserstoBooks" SET readstatus = ${readStatus} WHERE userid = ${uid} AND bookid = ${bid}`);
+            console.log("update row response: ", res);
+            await sql.query('COMMIT');
+            console.log("commited row");
+            console.log(res.rowCount);
+            await sql.end()
+            return res.rowCount;
         } catch (err) {
-          await client.query('ROLLBACK');
+          // await sql.query('ROLLBACK');
           throw err;
-        } finally {
-          client.release();
-          await pool.end();
-
-        }
-        
+        } 
     }
 
     static async queryRow(uid, bid) {
@@ -77,6 +74,7 @@ module.exports = class NeonDAO {
             console.log("uid: ", uid, "bid: ", bid)
             const res = await sql.query(`SELECT * FROM "UserstoBooks" WHERE userid = ${uid} AND bookid = ${bid}`) // 
             console.log("query row response: ", res.rows);
+            await sql.end()
             return res.rows
         } catch (err) {
           throw err;

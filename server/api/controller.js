@@ -7,15 +7,18 @@ module.exports = class NeonController {
             console.log("Request Body: ", req.body);
             const { uid, bid, readStatus } = req.body;
             const bookExists = await neonDAO.queryRow(uid, bid);
-            console.log("Result ", bookExists);
-            
-            if ((bookExists.length > 0) & bookExists.readstatus != readStatus) {
+            console.log("Result ", bookExists[0].readstatus, readStatus);
+
+            // console.log(JSON.stringify(response))
+            if ((bookExists.length > 0) & bookExists[0].readstatus != readStatus) {
                 console.log("Updating existing book");
-                response = await neonDAO.updateRow(uid, bid, readStatus);
-            } else if (bookExists == null) { 
-                console.log("Adding new book");
-                response = await neonDAO.addRow(uid, bid, readStatus);
-            }
+                const response = await neonDAO.updateRow(uid, bid, readStatus);
+                print("Update Response: ", response);
+            } 
+            // else if (bookExists == null) { //TODO Stuck here
+            //     console.log("Adding new book");
+            //     response = await neonDAO.addRow(uid, bid, readStatus);
+            // }
 
             console.log("Response: ", response);
             res.status(201).json(response);
