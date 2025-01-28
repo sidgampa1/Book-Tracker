@@ -7,21 +7,24 @@ module.exports = class NeonController {
             console.log("Request Body: ", req.body);
             const { uid, bid, readStatus } = req.body;
             const bookExists = await neonDAO.queryRow(uid, bid);
-            console.log("Result ", bookExists[0].readstatus, readStatus);
+            console.log("recived query resp ", bookExists, bookExists.length);
+            // console.log("Result ", bookExists[0].readstatus, readStatus);
 
-            // console.log(JSON.stringify(response))
-            if ((bookExists.length > 0) & bookExists[0].readstatus != readStatus) {
+            if ((bookExists.length > 0) && bookExists[0].readstatus != readStatus) {
                 console.log("Updating existing book");
-                const response = await neonDAO.updateRow(uid, bid, readStatus);
-                print("Update Response: ", response);
+                const result = await neonDAO.updateRow(uid, bid, readStatus);
+                if (result > 0) {
+                    res.status(201).json({"numRowsUpdated": result});
+                }
             } 
-            // else if (bookExists == null) { //TODO Stuck here
-            //     console.log("Adding new book");
-            //     response = await neonDAO.addRow(uid, bid, readStatus);
-            // }
+            else if (bookExists.length == 0) { //TODO Stuck here
+                console.log("Adding new book");
+                const result = await neonDAO.addRow(uid, bid, readStatus);
+                if (result) {
+                    res.status(201).json({"newRowId": result[0].id});
+                }
+            }
 
-            console.log("Response: ", response);
-            res.status(201).json(response);
         }
         catch (err) {
             res.status(500).json(err);
