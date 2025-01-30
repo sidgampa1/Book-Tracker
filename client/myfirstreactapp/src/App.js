@@ -3,41 +3,41 @@ import './App.css';
 import Book from './Book.js';
 
 function App() {
-  this.apiLink = 'http://localhost:3000/api/v1/books'
+  const apiLink = 'http://localhost:3000/api/v1/books'
 
-  function deleteBook(id) {
-    fetch(this.apiLink + "/deleteBook", {
-      method: 'DELETE',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        uid: 1,
-        bid: id,
-      })
-    })
-  }
+  // function deleteBook(id) {
+  //   const res = fetch(this.apiLink + "/deleteBook", {
+  //     method: 'DELETE',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       uid: 1,
+  //       bid: id,
+  //     })
+  //   })
+  // }
 
-  function addBook(id, readStatus) {
-    fetch(this.apiLink + "/addBook", {
+  async function addBook(id, readStatus) {
+    const res = await fetch(apiLink + "/addBook", {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({
         uid: 1,
-        bid: id,
-        readStatus: readStatus,
+        bid: Number(id),
+        readStatus: Number(readStatus),
       })
     })
-  }
 
+    console.log(res)
+  }
+// addBook={addBook} deleteBook={deleteBook}
 
   return (
-    <div >
-      <Book title="Test1" id="1" addBook={addBook} deleteBook={deleteBook}></Book>
+    <div className="Book">
+      <Book title="Test1" id="1" readStatus="1" addBook={addBook}></Book>
     </div>
   );
 }
