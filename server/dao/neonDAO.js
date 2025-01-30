@@ -9,20 +9,7 @@ var sql = new pg.Client(conString);
 sql.connect();
 
 module.exports = class NeonDAO {
-  static async createConnection() {
-        try {
-            console.log("creating connection");
-            const pool = new neon.Pool({ connectionString: process.env.DATABASE_URL });
-            console.log("pool created");
-            pool.on('error', (err) => console.error(err)); 
-            const client = await pool.connect();
-            console.log("client created");
-            return client;
-        } catch (err) {
-            console.error(err);
-        }
 
-    }
     
     static async addRow(uid, bid, readStatus) {
         try {
@@ -82,19 +69,13 @@ module.exports = class NeonDAO {
 
     static async deleteRow(uid, bid) {
         try {
-            client = await this.createConnection();
-            res = await client.query('DELETE FROM "UserstoBooks" WHERE UserId = $1 AND BookId = $2', [
-            uid,
-            bid
-          ]);
-          return res;
+            console.log("deleteRow sql connection made")
+            const res = await sql.query(`DELETE FROM "UserstoBooks" WHERE UserId = ${uid} AND BookId = ${bid}`);
+            console.log("delete row response: ", res);
+          return res.rowCount;
         } catch (err) {
           throw err;
-        } finally {
-          client.release();
-          await pool.end();
-
-        }
+        } 
         
     }
 }
