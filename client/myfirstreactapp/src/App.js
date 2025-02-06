@@ -11,6 +11,7 @@ function App() {
   const apiLink = 'http://localhost:8000/api/v1/books'
 
   const [books, setBooks] = useState([])
+  const [active, setActive] = useState("read")
 
   useEffect(() => {
     fetch(apiLink + "/getUserBooks?uid=1", {
@@ -20,7 +21,7 @@ function App() {
       })
       .then(res => res.json()).then(res => {setBooks(res)})}, [])
     
-    console.log(books)
+    console.log("books",books)
 
   // function deleteBook(id) {
   //   const res = fetch(this.apiLink + "/deleteBook", {
@@ -54,12 +55,28 @@ function App() {
 
   return (
     <>
-    <NavBar></NavBar>
-    <div className="Book">
-      <Book title="Test1" id="3" readStatus="1" addBook={addBook}></Book>
-      {books.map((book) => (<Book title={book.bookid} id={book.bookid} readStatus={book.readstatus} addBook={addBook}></Book>
+    <NavBar setActive={setActive}></NavBar>
+   {(active === "read") && <section id="read"> 
+      <h1>Completed</h1>
+    <Book title="Test1" id="3" readStatus="0" addBook={addBook}></Book>
+    </section>}
+    {(active === "reading") && <section id="reading">  
+      <h1>Currently Reading</h1>
+    {books.map((book) => ((book.readstatus === 1) ? <Book title={book.bookid} id={book.bookid} readStatus={book.readstatus} addBook={addBook}></Book> : null
       ))}
-    </div>
+          <Book title="Test1" id="3" readStatus="0" addBook={addBook}></Book>
+
+          <Book title="Test1" id="3" readStatus="0" addBook={addBook}></Book>
+
+          <Book title="Test1" id="3" readStatus="0" addBook={addBook}></Book>
+
+    </section>}
+    {(active === "toRead") && <section id="toRead" display = {active === "toRead" ? "" : "none"} >
+      <h1>Want to Read</h1>
+    {books.map((book) => ((book.readstatus === 2) ? <Book title={book.bookid} id={book.bookid} readStatus={book.readstatus} addBook={addBook}></Book> : null
+      ))}
+    </section>}
+
     </>
   );
 }
