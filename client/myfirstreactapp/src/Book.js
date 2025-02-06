@@ -1,4 +1,6 @@
 import React from 'react'
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
 
 export default class Book extends React.Component{
 
@@ -10,11 +12,17 @@ export default class Book extends React.Component{
     }
     render() {
         return (
-            <div>
-            <div>{this.props.title}</div>
-            <div><button onClick={() => this.props.deleteBook(this.props.id)}>Delete</button></div>
-            <div><button onClick={() => this.props.addBook(this.props.id, this.props.readStatus)}>Add</button></div>
-            </div>
+            <Card style={{ width: '18rem' }}>
+            <Card.Img variant="top" src="holder.cjs/100px180" />
+            <Card.Body>
+            <Card.Title>{this.props.title}</Card.Title>
+            <Card.Text>
+                Summary of book {this.props.title}
+            </Card.Text>
+            <Button variant="primary" onClick={() => this.props.addBook(this.props.id, this.props.readStatus)}>Add</Button>
+            <Button variant="primary" onClick={() => this.props.deleteBook(this.props.id)}>Delete</Button>
+            </Card.Body>
+            </Card>
         )
     }
 }

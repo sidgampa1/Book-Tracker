@@ -1,9 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import Book from './Book.js';
+import NavBar from './NavBar.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+
+
 
 function App() {
   const apiLink = 'http://localhost:8000/api/v1/books'
@@ -51,11 +53,14 @@ function App() {
 // addBook={addBook} deleteBook={deleteBook}
 
   return (
+    <>
+    <NavBar></NavBar>
     <div className="Book">
       <Book title="Test1" id="3" readStatus="1" addBook={addBook}></Book>
       {books.map((book) => (<Book title={book.bookid} id={book.bookid} readStatus={book.readstatus} addBook={addBook}></Book>
       ))}
     </div>
+    </>
   );
 }
 

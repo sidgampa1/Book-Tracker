@@ -62,5 +62,17 @@ module.exports = class NeonController {
             res.status(500).json(err);
         }
     }
+
+    static async getUserBooks(req, res) {
+        try {
+            const { uid } = req.query;
+            const response = await neonDAO.getUserBooks(uid);
+            console.log("getUserBooks response: ", response);
+            res.status(200).json(response);
+        }
+        catch (err) {
+            res.status(500).json(err);
+        }
+    }
     
 };

@@ -67,6 +67,22 @@ module.exports = class NeonDAO {
         
     }
 
+    static async getUserBooks(uid) {
+      try {
+          // var sql = new pg.Client(conString);
+          // sql.connect();
+          console.log("user books sql connection made")
+          console.log("uid: ", uid)
+          const res = await sql.query(`SELECT * FROM "UserstoBooks" WHERE userid = ${uid}`)
+          console.log("query row response: ", res.rows);
+          // await sql.end()
+          return res.rows
+      } catch (err) {
+        throw err;
+      }
+      
+  }
+
     static async deleteRow(uid, bid) {
         try {
             console.log("deleteRow sql connection made")
