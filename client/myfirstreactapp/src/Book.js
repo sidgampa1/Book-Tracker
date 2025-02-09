@@ -1,16 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import { Rating } from 'react-simple-star-rating';
 
-export default class Book extends React.Component{
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            rating: ""
+
+export default function Book (props) {
+        console.log(props)
+        const [rating, setRating] = useState(props.rating)
+
+        const handleRating = (rate) => {
+            setRating(rate)
         }
-    }
-    render() {
+
+
         return (
             <Card style={{ width: '18rem' }}>
             <Card.Img variant="top" src="holder.cjs/100px180" />
@@ -21,8 +24,8 @@ export default class Book extends React.Component{
             </Card.Text>
             <Button variant="primary" onClick={() => this.props.addBook(this.props.id, this.props.readStatus)}>Add</Button>
             <Button variant="primary" onClick={() => this.props.deleteBook(this.props.id)}>Delete</Button>
+            <Rating onClick={handleRating} />
             </Card.Body>
             </Card>
         )
     }
-}
