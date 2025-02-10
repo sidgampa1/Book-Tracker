@@ -8,8 +8,7 @@ import React, { useState, useEffect } from 'react';
 
 
 function App() {
-  const apiLink = 'http://localhost:8000/api/v1/books'
-
+  const apiLink = "http://localhost:8000/api/v1/books"
   const [books, setBooks] = useState([])
   const [active, setActive] = useState("read")
 
@@ -21,7 +20,7 @@ function App() {
       })
       .then(res => res.json()).then(res => {setBooks(res)})}, [])
     
-    console.log("books",books)
+    console.log("books", books)
 
   // function deleteBook(id) {
   //   const res = fetch(this.apiLink + "/deleteBook", {
@@ -36,7 +35,8 @@ function App() {
   //   })
   // }
 
-  async function addBook(id, readStatus) {
+  async function addBook(id, readStatus, rating) {
+    console.log(apiLink)
     const res = await fetch(apiLink + "/addBook", {
       method: 'POST',
       headers: {
@@ -46,6 +46,7 @@ function App() {
         uid: 1,
         bid: Number(id),
         readStatus: Number(readStatus),
+        rating: Number(rating)
       })
     })
 
