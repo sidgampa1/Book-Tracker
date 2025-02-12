@@ -1,0 +1,5 @@
+export const statusMap = {
+    0: "Completed",
+    1: "Currently Reading",
+    2: "Want to Read"
+}

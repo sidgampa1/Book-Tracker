@@ -11,12 +11,12 @@ sql.connect();
 module.exports = class NeonDAO {
 
     
-    static async addRow(uid, bid, readStatus) {
+    static async addRow(uid, bid, readStatus, rating) {
         try {
           console.log("addRow sql connection made");
           console.log("uid: ", uid, "bid: ", bid);
           await sql.query('BEGIN');
-          const res = await sql.query(`INSERT INTO "UserstoBooks" (userid, bookid, readstatus) VALUES (${uid}, ${bid}, ${readStatus}) RETURNING id`);
+          const res = await sql.query(`INSERT INTO "UserstoBooks" (userid, bookid, readstatus, rating, title) VALUES (${uid}, ${bid}, ${readStatus}, ${rating}, ${title}) RETURNING id`);
           console.log("add row response: ", res.rows);
           await sql.query('COMMIT');
           console.log("commited add row")
@@ -30,13 +30,13 @@ module.exports = class NeonDAO {
     }
 
 
-    static async updateRow(uid, bid, readStatus) {
+    static async updateRow(uid, bid, readStatus, rating) {
         try {
             console.log("received request at updateRow", uid, bid, readStatus);
             // var sql = new pg.Client(conString);
             // sql.connect();
             // console.log("connected to neon");
-            const res = await sql.query(`UPDATE "UserstoBooks" SET readstatus = ${readStatus} WHERE userid = ${uid} AND bookid = ${bid}`);
+            const res = await sql.query(`UPDATE "UserstoBooks" SET readstatus = ${readStatus}, rating = ${rating} WHERE userid = ${uid} AND bookid = ${bid}`);
             console.log("update row response: ", res);
             await sql.query('COMMIT');
             console.log("commited updated row");

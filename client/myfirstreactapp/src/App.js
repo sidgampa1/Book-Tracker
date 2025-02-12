@@ -35,7 +35,7 @@ function App() {
   //   })
   // }
 
-  async function addBook(id, readStatus, rating) {
+  async function addBook(id, readStatus, rating, title) {
     console.log(apiLink)
     const res = await fetch(apiLink + "/addBook", {
       method: 'POST',
@@ -46,7 +46,8 @@ function App() {
         uid: 1,
         bid: Number(id),
         readStatus: Number(readStatus),
-        rating: Number(rating)
+        rating: Number(rating),
+        title: title
       })
     })
 
@@ -59,17 +60,18 @@ function App() {
     <NavBar setActive={setActive}></NavBar>
    {(active === "read") && <section id="read"> 
       <h1>Completed</h1>
-    <Book title="Test1" id="3" readStatus="0" addBook={addBook} rating={1}></Book>
+      {books.map((book) => ((book.readstatus === 0) ? <Book title={book.title} id={book.bookid} readStatus={book.readstatus} rating={book.rating} addBook={addBook}></Book> : null
+      ))}
     </section>}
     {(active === "reading") && <section id="reading">  
       <h1>Currently Reading</h1>
     {books.map((book) => ((book.readstatus === 1) ? <Book title={book.title} id={book.bookid} readStatus={book.readstatus} rating={book.rating} addBook={addBook}></Book> : null
       ))}
-          <Book title="Test1" id="3" readStatus="0" addBook={addBook} rating={1}></Book>
+          {/* <Book title="Test1" id="4" readStatus="0" addBook={addBook} rating={1}></Book>
 
-          <Book title="Test2" id="3" readStatus="0" addBook={addBook} rating={2}></Book>
+          <Book title="Test2" id="5" readStatus="0" addBook={addBook} rating={2}></Book>
 
-          <Book title="Test3" id="3" readStatus="0" addBook={addBook} rating={3}></Book>
+          <Book title="Test3" id="6" readStatus="0" addBook={addBook} rating={3}></Book> */}
 
     </section>}
     {(active === "toRead") && <section id="toRead" display = {active === "toRead" ? "" : "none"} >
